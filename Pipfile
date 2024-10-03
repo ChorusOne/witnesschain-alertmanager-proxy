@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "*"
+fastapi = {extras = ["standard"], version = "*"}
+pydantic-settings = "*"
+pydantic = "*"
+yarl = "*"
+pyyaml = "*"
+furl = "*"
+
+[dev-packages]
+pytest = "*"
+mypy = "*"
+flake8 = "*"
+black = "*"
+types-requests = "*"
+types-pyyaml = "*"
+
+[requires]
+python_version = "3.12"
