@@ -1,0 +1,29 @@
+config:
+  alert:
+    name: WitnessChainFatalError
+    duration_ms: 7200000
+    label_append:
+      type: external
+      network: holesky
+      testnet: blue-orangutan
+      severity: high
+      route: "null"
+    description_tpl: |
+      Witnesschain FATAL failure for ${WATCHTOWER_ID}
+    summary_tpl: |
+      Received FATAL alert from Witnesschain Watchtower with address=${WATCHTOWER_ID},
+      process of signing witness proofs might be interrupted. Watchtower message:
+      ${MESSAGE}
+    generator_url_tpl: https://blue-orangutan-blockscout.eu-north-2.gateway.fm/address/${WATCHTOWER_ID}
+
+    internal_error:
+      labels:
+        type: internal
+        network: holesky
+        testnet: blue-orangutan
+      route: "null"
+      description: "Failed to process Watchtower alert"
+      summary: The processing of Watchtower alert ended with exception
+
+  manager:
+    url: http://localhost:9093/api/v2/alerts
