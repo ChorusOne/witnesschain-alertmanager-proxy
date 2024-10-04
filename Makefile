@@ -1,9 +1,9 @@
-.PHONY: lint deps test test-verbose
+.PHONY: all lint deps test test-verbose
 
 all: lint test
 
 lint: deps
-	pipenv run flake8 --ignore=E501,W503 .
+	pipenv run flake8 --ignore=E501,W503,E402 .
 	pipenv run mypy --strict .
 	pipenv run black --check .
 
@@ -11,7 +11,9 @@ deps:
 	pipenv sync --dev
 
 test: deps
-	pipenv run pytest tests.py -sv
+	cd tests && docker compose up -d
+	bash -c "trap 'cd tests && docker compose down' EXIT; pipenv run pytest tests/__init__.py -sv"
 
 test-verbose: deps
-	pipenv run pytest tests.py -v -o log_cli=true --capture=fd --show-capture=stderr --log-level=DEBUG
+	cd tests && docker compose up -d
+	bash -c "trap 'cd tests && docker compose down' EXIT; pipenv run pytest tests/__init__.py -v -o log_cli=true --capture=fd --show-capture=stderr --log-level=DEBUG"

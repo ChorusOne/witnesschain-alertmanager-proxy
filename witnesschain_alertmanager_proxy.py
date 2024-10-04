@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import functools
 import logging
+import os
 import pathlib
 import string
 import sys
@@ -213,7 +214,8 @@ class WitnesschainAlertmanagerProxy(BaseSettings):
 
 @functools.lru_cache
 def get_proxy_config() -> WitnesschainAlertmanagerProxy:
-    config_yaml_path = pathlib.Path(__file__).parent / "config.yml"
+    config_path = os.environ.get("CONFIG_FILE", "config.yml")
+    config_yaml_path = pathlib.Path(__file__).parent / config_path
     if not config_yaml_path.exists():
         logger.error("YAML config file not found at %s", config_yaml_path)
         exit(2)
