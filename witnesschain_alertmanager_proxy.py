@@ -59,8 +59,10 @@ class Alert(BaseModel):
 
         requestBody := bytes.NewBuffer(request)
         """
+        text, msg = text.strip().split("message:")
         input_label_lines = text.strip().split("\n")
         labels = {}
+        labels["message"] = msg
         for input_label in input_label_lines:
             name, value = input_label.split(":", 1)
             value = value.strip()

@@ -32,7 +32,7 @@ def test_integration() -> None:
     wait_for_alertmanager_port()
     text = (
         """
-    watchtower_id: %s\nfrom: %s\ntimestamp: %s\nfile: %s\nline: %s\nmessage: %s\n
+    watchtower_id: %s\nfrom: %s\ntimestamp: %s\nfile: %s\nline: %smessage: %s\n
     """
         % (
             "0x0e71247b49013664006D8472107f9e127695d9d7",
