@@ -140,7 +140,7 @@ ${MESSAGE}
     """
     )  # type: ignore[assignment]
     generator_url_tpl: StringTemplate = string.Template(
-        "https://explorer.witnesschain.com/address/0x126941dD74876BbFDdE520AB4ADb226453A11983"
+        "https://explorer.witnesschain.com/address/${WATCHTOWER_ID}"
     )  # type: ignore[assignment]
 
     # These value are NOT shared mutable: https://stackoverflow.com/a/73621352
