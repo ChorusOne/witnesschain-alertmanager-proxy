@@ -249,3 +249,8 @@ def alert(proxy: ProxySettings, body: WitnessChainErrorLog, response: Response) 
         response.status_code = 500
         proxy.config.send_internal_alert(exc)
         return str(exc)
+
+
+@app.get("/health")
+def health() -> str:
+    return "OK"
