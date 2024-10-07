@@ -9,6 +9,7 @@ import typing
 
 from fastapi import Depends, FastAPI, Response
 import furl  # type: ignore[import-untyped]
+from prometheus_client import Gauge, make_asgi_app
 from pydantic import AfterValidator, BaseModel, ConfigDict
 from pydantic_settings import BaseSettings
 import requests
@@ -24,6 +25,11 @@ logger = logging.getLogger(__name__)
 
 
 app = FastAPI()
+witnesschain_alert = Gauge(
+    name="witnesschain_alert",
+    documentation="Witnesschain alert count",
+    labelnames=["file", "line", "watchtower_id"],
+)
 
 
 StringTemplate = typing.Annotated[str, AfterValidator(string.Template)]
@@ -240,6 +246,10 @@ def alert(proxy: ProxySettings, body: WitnessChainErrorLog, response: Response) 
             body.text
         ), "Text received from WitnessChain Watchtower should not be empty"
         alert = proxy.incoming(body)
+        ts = int(alert.labels["timestamp"])
+        witnesschain_alert.labels(
+            alert.labels["file"], alert.labels["line"], alert.labels["watchtower_id"]
+        ).set(ts)
         rendered = proxy.render(alert)
         proxy.send_alert(rendered)
         response.status_code = 204
@@ -256,3 +266,7 @@ def alert(proxy: ProxySettings, body: WitnessChainErrorLog, response: Response) 
 @app.get("/health")
 def health() -> str:
     return "OK"
+
+
+metrics_app = make_asgi_app()
+app.mount("/metrics", metrics_app)

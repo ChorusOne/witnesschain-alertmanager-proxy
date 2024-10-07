@@ -6,6 +6,7 @@ import time
 
 import requests
 from fastapi.testclient import TestClient
+from prometheus_client.parser import text_string_to_metric_families
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent.parent))
 from witnesschain_alertmanager_proxy import app
@@ -48,3 +49,18 @@ def test_integration() -> None:
     alerts = requests.get(alerts_url)
     alert_data = alerts.json()
     assert len(alert_data) > 0
+
+    metrics_text = client.get("/metrics")
+    metrics = list(text_string_to_metric_families(metrics_text.text))
+    found = False
+    for metric in metrics:
+        if metric.name == "witnesschain_alert":
+            sample = metric.samples[0]
+            assert (
+                sample.labels["watchtower_id"]
+                == "0x0e71247b49013664006D8472107f9e127695d9d7"
+            )
+            assert sample.labels["file"] == "example.go"
+            assert sample.labels["line"] == "500"
+            found = True
+    assert found
