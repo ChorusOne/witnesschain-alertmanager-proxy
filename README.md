@@ -33,3 +33,13 @@ pipenv run python3 witnesschain_alertmanager_proxy.py
 By default, config file will be loaded from a location `./config.yml` in
 the folder where program runs. Pass `CONFIG_FILE` environment variable to
 specify alertnative location relative to working directory.
+
+Available metrics
+-----------------
+
+`witnesschain_alert` -- latest timestamp of alert recorded,
+
+Dimensions:
+ - `watchtower_id` watchtower address on L2 network
+ - `line` line where exception happened
+ - `file` file where exception happened
