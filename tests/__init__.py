@@ -38,7 +38,7 @@ def test_integration() -> None:
         % (
             "0x0e71247b49013664006D8472107f9e127695d9d7",
             "200",
-            "1728038914",
+            "Oct 7 14:26:18 2024",
             "example.go",
             "500",
             "Test alert message",

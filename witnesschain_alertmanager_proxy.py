@@ -246,10 +246,10 @@ def alert(proxy: ProxySettings, body: WitnessChainErrorLog, response: Response) 
             body.text
         ), "Text received from WitnessChain Watchtower should not be empty"
         alert = proxy.incoming(body)
-        ts = int(alert.labels["timestamp"])
+        ts = datetime.strptime(alert.labels["timestamp"], "%b %d %H:%M:%S %Y")
         witnesschain_alert.labels(
             alert.labels["file"], alert.labels["line"], alert.labels["watchtower_id"]
-        ).set(ts)
+        ).set(ts.timestamp())
         rendered = proxy.render(alert)
         proxy.send_alert(rendered)
         response.status_code = 204

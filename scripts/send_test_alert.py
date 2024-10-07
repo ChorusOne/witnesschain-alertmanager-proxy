@@ -1,6 +1,5 @@
 import argparse
 import copy
-import time
 
 import requests
 
@@ -10,7 +9,7 @@ parser.add_argument("--url", default="http://127.0.0.1:8000")
 parser.add_argument(
     "--watchtower-id", default="0x0e71247b49013664006D8472107f9e127695d9d7"
 )
-parser.add_argument("--timestamp", default=lambda: str(int(time.time())))
+parser.add_argument("--timestamp", default="Oct 7 14:26:18 2024")
 parser.add_argument("--file", default="emulator.py")
 parser.add_argument("--line", default="9393")
 parser.add_argument("--message", default="This is a test alert message")
